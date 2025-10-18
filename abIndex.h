@@ -26,7 +26,7 @@ public:
 
 	vector<int>visited;
 	int rec;
-	vector<vector<set<pair<int, int>>>>block;
+	vector<vector<set<pair<int, int>>>>block,block_2;
 	vector<vector<pair<int, int>>>rank;
 	vector<int>wmap;
 
@@ -38,8 +38,10 @@ public:
 	void creatSG1(BiGraph& graph);
 	void creatSG2(BiGraph& graph);
 	void creatSGOpt(BiGraph& graph);
+	void creatSGOpt_2(BiGraph& graph);
 	void creatTree();
 	void addEdge();
+	void addEdge_2();
 	void BFSonASG(int a, int b, int w, vector<int>& wmap);
 	void query(int q, int alpha, int beta, vector<bool>& leftResult, vector<bool>& rightResult);
 	void queryOpt(int q, int alpha, int beta, vector<bool>& leftResult, vector<bool>& rightResult, int k);
@@ -56,9 +58,9 @@ abIndex::abIndex(BiGraph& graph) {
 	vNumber = graph.vNumber;
 	graph.vNumber.clear();
 	//creatSG(graph);
-	//creatSGOpt(graph);
+	creatSGOpt_2(graph);
 
-	///cout << S.size() << "  " << SOpt.size() << endl;
+	//cout << S.size() << "  " << SOpt.size() << endl;
 	//creatTree();
 	//writeIndex();
 }
@@ -238,6 +240,7 @@ void abIndex::creatSGOpt(BiGraph& graph) {
 		SOpt[i.second].neighbor.push_back(i.first);
 	}
 	graph.block1.clear();
+
 	visited.resize(SOpt.size(), -1);
 	rec = 0;
 	block.resize(graph.maxAlpha + 1);
@@ -322,6 +325,115 @@ void abIndex::creatSGOpt(BiGraph& graph) {
 				SOpt[i].leftGroup.push_back({ j,left[i][j] });
 		for (int j = 0; j < right[i].size(); j++) 
 			if (right[i][j].size() > 0) 
+				SOpt[i].rightGroup.push_back({ j,right[i][j] });
+	}
+	left.clear();
+	right.clear();
+}
+
+void abIndex::creatSGOpt_2(BiGraph& graph) {
+	for (auto i : graph.cluster) {
+		node s;
+		s.alpha = get<0>(i);
+		s.beta = get<1>(i);
+		SOpt.push_back(s);
+	}
+
+	visited.resize(SOpt.size(), -1);
+	rec = 0;
+	block.resize(graph.maxAlpha + 1);
+	block_2.resize(graph.maxAlpha + 1);
+	for (auto i : graph.block1) {
+		if (i.first == i.second)
+			continue;
+		int a = min(SOpt[i.first].alpha, SOpt[i.second].alpha);
+		int b = min(SOpt[i.first].beta, SOpt[i.second].beta);
+		if (block[a].size() <= b)
+			block[a].resize(b + 1);
+		block[a][b].insert(make_pair(i.first, i.second));
+	}
+	graph.block1.clear();
+	for (auto i : graph.block2) {
+		if (i.first == i.second)
+			continue;
+		int a = min(SOpt[i.first].alpha, SOpt[i.second].alpha);
+		int b = min(SOpt[i.first].beta, SOpt[i.second].beta);
+		if (block_2[a].size() <= b)
+			block_2[a].resize(b + 1);
+		block_2[a][b].insert(make_pair(i.first, i.second));
+	}
+	graph.block2.clear();
+	addEdge_2();
+
+	vector<vector<vector<int>>>left, right;
+	left.resize(SOpt.size());
+	right.resize(SOpt.size());
+	for (int i = 0; i < uNumber.size(); i++)
+		for (int j = 0; j < uNumber[i].size(); j++) {
+			int c = uNumber[i][j];
+			if (SOpt[c].alpha <= graph.maxK) {
+				if (j == 0) {
+					if (left[c].size() == 0)
+						left[c].resize(1);
+					left[c][j].push_back(i);
+				}
+				else {
+					int c0 = uNumber[i][j - 1];
+					if (left[c].size() <= SOpt[c0].alpha)
+						left[c].resize(SOpt[c0].alpha + 1);
+					left[c][SOpt[c0].alpha].push_back(i);
+				}
+			}
+			else {
+				if (j == uNumber[i].size() - 1) {
+					if (left[c].size() == 0)
+						left[c].resize(1);
+					left[c][0].push_back(i);
+				}
+				else {
+					int c2 = uNumber[i][j + 1];
+					if (left[c].size() <= SOpt[c2].beta)
+						left[c].resize(SOpt[c2].beta + 1);
+					left[c][SOpt[c2].beta].push_back(i);
+				}
+			}
+		}
+	for (int i = 0; i < vNumber.size(); i++)
+		for (int j = 0; j < vNumber[i].size(); j++) {
+			int c = vNumber[i][j];
+			if (SOpt[c].alpha <= graph.maxK) {
+				if (j == 0) {
+					if (right[c].size() == 0)
+						right[c].resize(1);
+					right[c][j].push_back(i);
+				}
+				else {
+					int c0 = vNumber[i][j - 1];
+					if (right[c].size() <= SOpt[c0].alpha)
+						right[c].resize(SOpt[c0].alpha + 1);
+					right[c][SOpt[c0].alpha].push_back(i);
+				}
+			}
+			else {
+				if (j == vNumber[i].size() - 1) {
+					if (right[c].size() == 0)
+						right[c].resize(1);
+					right[c][0].push_back(i);
+				}
+				else {
+					int c2 = vNumber[i][j + 1];
+					if (right[c].size() <= SOpt[c2].beta)
+						right[c].resize(SOpt[c2].beta + 1);
+					right[c][SOpt[c2].beta].push_back(i);
+				}
+			}
+		}
+	for (int i = 0; i < SOpt.size(); i++) {
+		for (int j = 0; j < left[i].size(); j++)
+			if (left[i][j].size() > 0)
+				SOpt[i].leftGroup.push_back({ j,left[i][j] });
+		for (int j = 0; j < right[i].size(); j++)
+			if (right[i][j].size() > 0)
 				SOpt[i].rightGroup.push_back({ j,right[i][j] });
 	}
 	left.clear();
@@ -431,6 +543,79 @@ void abIndex::addEdge() {
 			block[a][b].clear();
 		}
 	block.clear();
+}
+
+void abIndex::addEdge_2() {
+	int max = 0;
+	for (int i = 1; i < block.size(); i++)
+		if (max < (i + block[i].size() - 1))
+			max = i + block[i].size() - 1;
+	for (int i = 1; i < block_2.size(); i++)
+		if (max < (i + block_2[i].size() - 1))
+			max = i + block_2[i].size() - 1;
+	rank.clear();
+	rank.resize(max + 1);
+	for (int i = 1; i < block.size(); i++)
+		for (int j = 1; j < block[i].size(); j++)
+			rank[i + j].push_back(make_pair(i, j));
+	for (int i = 1; i < rank.size(); i++)
+		rank[i].push_back(make_pair(0, 0));
+
+	for (int i = 1; i < block_2.size(); i++)
+		for (int j = 1; j < block_2[i].size(); j++)
+			rank[i + j].push_back(make_pair(i, j));
+	UnionFind uf;
+	wmap.resize(SOpt.size(), 0);
+
+	for (int i = max; i > 1; i--) {
+		int falg = 0;
+		for (int j = 0; j < rank[i].size(); j++) {
+			int a = rank[i][j].first;
+			int b = rank[i][j].second;
+
+			if (a == 0 && b == 0) 
+				falg = 1;
+
+			if (falg == 0 && block[a].size()> b) {
+				for (auto k : block[a][b]) {
+					if (wmap[k.first] == 0) {
+						wmap[k.first] = uf.add();
+						BFSonASG(a, b, k.first, wmap);
+					}
+					if (wmap[k.second] == 0) {
+						wmap[k.second] = uf.add();
+						BFSonASG(a, b, k.second, wmap);
+					}
+					if (uf.merge(uf.Find(wmap[k.first]), uf.Find(wmap[k.second]))) {
+					}
+					SOpt[k.first].neighbor.push_back(k.second);
+					SOpt[k.second].neighbor.push_back(k.first);
+				}
+				wmap.clear();
+				block[a][b].clear();
+			}
+			else if(falg==1 && block_2[a].size() > b){
+				for (auto k : block_2[a][b]) {
+					if (wmap[k.first] == 0) {
+						wmap[k.first] = uf.add();
+						BFSonASG(a, b, k.first, wmap);
+					}
+					if (wmap[k.second] == 0) {
+						wmap[k.second] = uf.add();
+						BFSonASG(a, b, k.second, wmap);
+					}
+					if (uf.merge(uf.Find(wmap[k.first]), uf.Find(wmap[k.second]))) {
+						SOpt[k.first].neighbor.push_back(k.second);
+						SOpt[k.second].neighbor.push_back(k.first);
+					}
+				}
+				wmap.clear();
+				block_2[a][b].clear();
+			}
+		}
+	}
+	block.clear();
+	block_2.clear();
 }
 
 void abIndex::BFSonASG(int a, int b, int w, vector<int>& wmap) {
