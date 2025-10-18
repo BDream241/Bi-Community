@@ -3,7 +3,6 @@
 
 class BiGraph {
 public:
-	//±äÁ¿
 	int n1, n2, m, maxAlpha, maxBeta, maxK, maxUDeg, maxVDeg;
 	vector<int>uDeg, vDeg;
 	vector<vector<int>> uNeighbor, vNeighbor;
@@ -30,7 +29,6 @@ public:
 	void printBiCore();
 
 public:
-	//alpha¡¢beta·Ö½â
 	int decompose();
 	int coreDecompose();
 	int alphaDecompose(int alpha, vector<int>& leftDeg, vector<int>& rightDeg, vector<bool>& uDelete,
@@ -129,24 +127,24 @@ void BiGraph::print() {
 
 
 int BiGraph::coreDecompose() {
-	vector<int> leftQ;//×ó²àÉ¾³ı¶ÓÁĞ
-	vector<int> rightQ;//ÓÒ²àÉ¾³ı¶ÓÁĞ
+	vector<int> leftQ;
+	vector<int> rightQ;
 
-	int num1 = n1 + 1;//×ó²à½ÚµãÊıÁ¿
-	vector<int> leftR(num1);//ÓÃÓÚ´æ´¢µ±Ç°µü´úÖĞÉĞÎ´±»É¾³ıµÄ¶¥µã
+	int num1 = n1 + 1;
+	vector<int> leftR(num1);
 	for (int i = 0; i < leftR.size(); i++)
 		leftR[i] = i;
 
-	int leftRTnum = 0;//ÓÃÓÚ¼ÇÂ¼ÔÚµ±Ç°µü´úÖĞÉĞÎ´±»É¾³ıµÄ¶¥µãÊıÁ¿¡£
-	vector<int> leftRT(num1);//ÓÃÓÚÁÙÊ±´æ´¢ÔÚµ±Ç°µü´úÖĞÉĞÎ´±»É¾³ıµÄ¶¥µã
+	int leftRTnum = 0;
+	vector<int> leftRT(num1);
 
 	int num2 = n2 + 1;//
-	vector<int> rightR(num2);//ÓÃÓÚ´æ´¢µ±Ç°µü´úÖĞÉĞÎ´±»É¾³ıµÄ¶¥µã
+	vector<int> rightR(num2);
 	for (int i = 0; i < rightR.size(); i++)
 		rightR[i] = i;
 
-	int rightRTnum = 0;//ÓÃÓÚ¼ÇÂ¼ÔÚµ±Ç°µü´úÖĞÉĞÎ´±»É¾³ıµÄ¶¥µãÊıÁ¿¡£
-	vector<int> rightRT(num2);//ÓÃÓÚÁÙÊ±´æ´¢ÔÚµ±Ç°µü´úÖĞÉĞÎ´±»É¾³ıµÄ¶¥µã
+	int rightRTnum = 0;
+	vector<int> rightRT(num2);
 
 	vector<bool>leftDel(num1, false), rightDel(num2, false);
 	vector<int>leftDeg = uDeg, rightDeg = vDeg;
@@ -344,7 +342,7 @@ int BiGraph::alphaDecompose(int alpha, vector<int>& leftDeg, vector<int>& rightD
 		}
 		rightQ.clear();
 	}
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	int num = n2;
 	int nextNum = 0;
 	vector<pair<int, bool>>bfsQ;
@@ -461,7 +459,6 @@ int BiGraph::betaDecompose(int beta, vector<int>& leftDeg, vector<int>& rightDeg
 		}
 		rightQ.clear();
 	}
-	//³õÊ¼»¯
 	int num = n1;
 	int nextNum = 0;
 	vector<pair<int, bool>>bfsQ;
@@ -472,7 +469,6 @@ int BiGraph::betaDecompose(int beta, vector<int>& leftDeg, vector<int>& rightDeg
 	vector<int>degL = leftDeg;
 	vector<int>degR = rightDeg;
 
-	//bi-core number
 	uDAG.resize(n1 + 1);
 	vDAG.resize(n2 + 1);
 
@@ -846,4 +842,5 @@ int BiGraph::verifyCore(BiGraph& g, vector<int>& leftResult, vector<int>& rightR
 	}
 	cout << "verify: true" << endl;
 	return 0;
+
 }
