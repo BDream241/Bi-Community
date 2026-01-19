@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 		leftResult.resize(graph.n1 + 1, false);
 		rightResult.resize(graph.n2 + 1, false);
 		ab.queryOpt(q, alpha, beta, leftResult, rightResult, graph.maxK);
-		cout << q << " " << alpha << " " << beta << ": ";
+		cout << q << " " << alpha << " "  << beta << ": ";
 		graph.verifyCom(graph, leftResult, rightResult, q, alpha, beta, 1);
 		leftResult.clear();
 		rightResult.clear();
@@ -53,4 +53,5 @@ int main(int argc, char* argv[]) {
 		rightResult.clear();
 	}
 }
+
 
