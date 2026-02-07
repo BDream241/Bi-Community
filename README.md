@@ -1,6 +1,30 @@
 This  provides a C++ implementation for bipartite graph community search.
 
-<h3>Overview</h3>
+<h2>Overview</h2>
+We implement a set of tools for processing bipartite graphs, including graph decomposition, index construction, bi-core search, and community search.
+The system supports querying  searching (\alpha, \beta)-communities containing a specified query vertex with given parameters.
+
+<h2>Code Structure</h2>
+
+<p>The main components of the code are organized as follows:</p>
+
+<h3>utility.h</h3>
+<p>
+The base file of the project.<br>
+It contains common utility functions, shared data structures, and basic definitions used throughout the codebase.
+</p>
+
+<h3>bigraph.h</h3>
+<p>
+This file is responsible for reading bipartite graph data and performing bipartite graph decomposition.<br>
+It handles graph construction from input files and prepares the graph for subsequent index building and query operations.
+</p>
+
+<h3>abIndex.h</h3>
+<p>
+The index construction module.<br>
+This file implements the index used to support efficient bi-core search and community search on bipartite graphs.
+</p>
  
 utility.h is the base file
 
