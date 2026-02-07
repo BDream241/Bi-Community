@@ -1,3 +1,7 @@
+This  provides a C++ implementation for bipartite graph community search.
+
+###Overview
+ 
 utility.h is the base file
 
 bigraph.h is used for reading and decomposing bipartite graph files
