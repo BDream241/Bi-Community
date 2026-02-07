@@ -26,12 +26,6 @@ The index construction module.<br>
 This file implements the index used to support efficient bi-core search and community search on bipartite graphs.
 </p>
  
-utility.h is the base file
-
-bigraph.h is used for reading and decomposing bipartite graph files
-
-abIndex.h is the index build file
-
 The command format for decomposing bipartite graphs: decompose data/WC
 
 .. /data/WC is the address of the dataset
