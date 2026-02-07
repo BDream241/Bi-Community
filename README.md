@@ -25,15 +25,54 @@ It handles graph construction from input files and prepares the graph for subseq
 The index construction module.<br>
 This file implements the index used to support efficient bi-core search and community search on bipartite graphs.
 </p>
+
+<h2>Real-world Datasets</h2>
+
+<p>
+The real-world datasets used in this project are collected from the KONECT network repository:
+</p>
+
+<p>
+<a href="http://konect.cc/networks/" target="_blank">http://konect.cc/networks/</a>
+</p>
+
+<p>
+KONECT is a publicly available repository providing a large collection of real-world networks, 
+including bipartite graphs from various application domains.
+</p>
  
-The command format for decomposing bipartite graphs: decompose data/WC
+<h2>Usage</h2>
 
-.. /data/WC is the address of the dataset
+<h3>1. Bipartite Graph Decomposition</h3>
 
-The command format of community search: community-search data/WC 1 2 3
+<p>
+To decompose a bipartite graph, use the following command:
+</p>
 
-1, 2, 3 respectively represent the query vertex, alpha and beta
+<pre><code>decompose data/WC</code></pre>
 
-The command format of bi-core search: bi-core search data/WC 2 3
+<p>
+<code>data/WC</code> specifies the path to the dataset.<br>
+The graph will be read and decomposed according to the implemented bipartite core definition.
+</p>
 
-2 and 3 respectively represent alpha and beta
+<h3>2. Community Search</h3>
+
+<p>
+The command format for community search is:
+</p>
+
+<pre><code>community-search data/WC 1 2 3</code></pre>
+
+<p>Where:</p>
+<ul>
+  <li><code>data/WC</code> : path to the dataset</li>
+  <li><code>1</code> : query vertex</li>
+  <li><code>2</code> : parameter α (alpha)</li>
+  <li><code>3</code> : parameter β (beta)</li>
+</ul>
+
+<p>
+This command searches for the community that contains the given query vertex under the specified <code>(α, β)</code> parameters.
+</p>
+
