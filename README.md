@@ -66,36 +66,44 @@ which contains three files:
  
 <h2>Usage</h2>
 
-<h3>1. Bipartite Graph Decomposition</h3>
+<h3>Bi-Community Search</h3>
 
 <p>
-To decompose a bipartite graph, use the following command:
+<code>BiCommunitySearch.exe</code> is the executable file of the proposed method.
+After launching the program, users need to provide the dataset path and the query file path as input.
 </p>
-
-<pre><code>decompose data/WC</code></pre>
 
 <p>
-<code>data/WC</code> specifies the path to the dataset.<br>
-The graph will be read and decomposed according to the implemented bipartite core definition.
+The command format for bi-community search is:
 </p>
 
-<h3>2. Community Search</h3>
-
-<p>
-The command format for community search is:
-</p>
-
-<pre><code>community-search data/WC 1 2 3</code></pre>
+<pre><code>BiCommunitySearch.exe AR AR/query.txt</code></pre>
 
 <p>Where:</p>
 <ul>
-  <li><code>data/WC</code> : path to the dataset</li>
-  <li><code>1</code> : query vertex</li>
-  <li><code>2</code> : parameter α (alpha)</li>
-  <li><code>3</code> : parameter β (beta)</li>
+  <li><code>AR</code> : path to the dataset</li>
+  <li><code>AR/query.txt</code> : path to the query file</li>
 </ul>
 
 <p>
-This command searches for the community that contains the given query vertex under the specified <code>(α, β)</code> parameters.
+The program processes all queries listed in <code>query.txt</code> sequentially and reports
+the index construction time as well as the search time for each query.
 </p>
+
+<p>
+An example output is shown below:
+</p>
+
+<pre><code>Index construction time: 48.4028 s
+community-0 search time: 0.15 ms
+community-1 search time: 0.1091 ms
+community-2 search time: 0.1083 ms
+community-3 search time: 0.1194 ms
+community-4 search time: 0.098 ms
+</code></pre>
+
+<p>
+Here, <code>community-i</code> corresponds to the <em>i</em>-th query in the query file.
+</p>
+
 
