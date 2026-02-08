@@ -40,6 +40,29 @@ The real-world datasets used in this project are collected from the KONECT netwo
 KONECT is a publicly available repository providing a large collection of real-world networks, 
 including bipartite graphs from various application domains.
 </p>
+
+<p>
+Each dataset, after preprocessing, is packaged in the same format as <code>data-AR.zip</code>,
+which contains three files:
+</p>
+
+<ul>
+  <li>
+    <code>graph.txt</code>: stores the basic statistics of the bipartite graph, including
+    the number of upper-layer vertices, the number of lower-layer vertices, and the total
+    number of edges.
+  </li>
+  <li>
+    <code>edge.txt</code>: stores all edges of the bipartite graph.
+  </li>
+  <li>
+    <code>query.txt</code>: stores all query instances. Each query consists of four integers,
+    e.g., <code>42 1 13 13</code>, representing the query vertex <code>q</code>, whether
+    <code>q</code> belongs to the upper layer (0 for no, 1 for yes), and the
+    <code>&alpha;</code> and <code>&beta;</code> parameters of the target community,
+    respectively.
+  </li>
+</ul>
  
 <h2>Usage</h2>
 
